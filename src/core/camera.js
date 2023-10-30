@@ -16,13 +16,17 @@ export const startCamera = async () => {
 }
 
 export const stopCamera = stream => {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop())
+  if (!stream) {
+    throw new Error('stopCamera: requires an argument.')
   }
+  // type check stream?
+  
+  stream.getTracks().forEach(track => track.stop())
 }
 
-export const handleTurnOnLight = (videoRef, light) => {
-  const videoTrack = videoRef.current.srcObject.getVideoTracks()[0]
+export const handleTurnOnLight = (srcObject, light) => {
+  // type check arguments?
+  const videoTrack = srcObject.getVideoTracks()[0]
   let constraints = undefined
     
   console.log('capabilities: ', videoTrack.getCapabilities())
@@ -50,8 +54,8 @@ export const handleTurnOnLight = (videoRef, light) => {
   return !light
 }
 
-export const toggleMute = (videoRef, mute) => {
-  const mediaStream = videoRef.current.srcObject
+export const toggleMute = (srcObject, mute) => {
+  const mediaStream = srcObject
   const audioTracks = mediaStream.getAudioTracks()
   if (audioTracks.length === 0) {
     return alert('No audio tracks found.')
@@ -74,27 +78,23 @@ export const handleTakePhoto = async videoRef => {
   })
 }
 
-export const handleRecordVideo = async videoRef => {
-  const mediaRecorder = new MediaRecorder(
-    videoRef.current.srcObject,
-    { mimeType: 'video/webm' }
-  )
-  mediaRecorderRef.current = mediaRecorder
-  mediaRecorder.ondataavailable = event => {
-    chunksRef.current.push(event.data)
-  }
-  mediaRecorder.onstop = async () => {
-    const blob = new Blob(chunksRef.current, { type: 'video/webm' })
-    chunksRef.current = []
-    const video = [ ...context.video, blob ]
-    const currentDuration = context.video_duration.reduce((acc, val) => acc + val, 0)
-    const duration = [ ...context.video_duration, 300 - timerRef.current - currentDuration ]
-    dispatch({ type: 'video_duration', payload: duration })
-    dispatch({ type: 'video', payload: video }) 
-    database.put({ id: 'video', video, duration })
-    createDefaults()
-  }
-  mediaRecorder.start()
+export const handleRecordVideo = async srcObject => {
+  return new Promise((resolve, reject) => {
+    const mediaRecorder = new MediaRecorder(
+      srcObject,
+      { mimeType: 'video/webm' }
+    )
+    mediaRecorderRef.current = mediaRecorder
+    mediaRecorder.ondataavailable = event => {
+      chunksRef.current.push(event.data)
+    }
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(chunksRef.current, { type: 'video/webm' })
+      chunksRef.current = []
+      resolve(blob)
+    }
+    mediaRecorder.start()
+  })
 }
 
 export const handleStopRecordVideo = () => {

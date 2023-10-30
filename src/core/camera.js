@@ -42,10 +42,11 @@ const camera = {
         throw new TypeError('turnOnLight: Invalid arguments.')
     }
     let constraints = undefined
-    const videoTrack = srcObject.getVideoTracks()[0]
+    const videoTracks = srcObject.getVideoTracks()
     if (!videoTracks.length) {
       throw new Error('No video tracks available.')
     }
+    const videoTrack = videoTracks[0]
     // Check if the fillLightMode constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
         constraints = { fillLightMode: 'flash' }
@@ -66,10 +67,11 @@ const camera = {
         throw new TypeError('turnOffLight: Invalid arguments.')
     }
     let constraints = undefined
-    const videoTrack = srcObject.getVideoTracks()[0]
+    const videoTracks = srcObject.getVideoTracks()
     if (!videoTracks.length) {
       throw new Error('No video tracks available.')
     }
+    const videoTrack = videoTracks[0]
     // Check if the fillLightMode constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
         constraints = { fillLightMode: 'off' }

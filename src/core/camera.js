@@ -43,8 +43,6 @@ export const handleTurnOnLight = (srcObject, light) => {
   const videoTrack = srcObject.getVideoTracks()[0]
   let constraints = undefined
     
-  console.log('capabilities: ', videoTrack.getCapabilities())
-    
   // Check if the fillLightMode constraint is supported
   if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
     constraints = { fillLightMode: !light ? 'flash' : 'off' }
@@ -54,15 +52,13 @@ export const handleTurnOnLight = (srcObject, light) => {
     constraints = { advanced: [{ torch: !light }] }
   }
     
-  console.log('constraints: ', constraints)
-    
   if (!constraints) {
     throw new Error('This device has no torch.')
   }
 
   // Turn on the camera light
   videoTrack.applyConstraints(constraints).catch(error => {
-    console.error('Unable to turn on camera light: ', error)
+    throw new Error('Unable to turn on camera light: ', error)
   })
     
   return !light

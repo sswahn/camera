@@ -11,7 +11,7 @@ export const startCamera = () => {
       }
     })
   } catch (error) {
-    console.error('Error accessing camera.')
+    throw new Error(`Error accessing camera. ${error}`)
   }
 }
 
@@ -22,7 +22,7 @@ export const stopCamera = stream => {
   try {
     stream.getTracks().forEach(track => track.stop())
   } catch (error) {
-    console.error('Error accessing camera.')
+    throw new Error(`Error accessing camera. ${error}`)
   }
 }
 
@@ -47,7 +47,7 @@ export const handleTurnOnLight = (srcObject, light) => {
   console.log('constraints: ', constraints)
     
   if (!constraints) {
-    return alert('This device has no torch.')
+    throw new Error('This device has no torch.')
   }
 
   // Turn on the camera light
@@ -65,7 +65,7 @@ export const toggleMute = (srcObject, mute) => {
   const mediaStream = srcObject
   const audioTracks = mediaStream.getAudioTracks()
   if (audioTracks.length === 0) {
-    return alert('No audio tracks found.')
+    throw new Error('No audio tracks found.')
   }
   audioTracks.forEach(track => {
     track.enabled = mute // set enabled as false to mute
@@ -84,11 +84,11 @@ export const handleTakePhoto = async videoRef => {
     canvas.height = video.videoHeight
     const ctx = canvas.getContext('2d')
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-    canvas.toBlob(blob => resolve(blob), 'image/webp', 1)
+    canvas.toBlob(blob => blob ? resolve(blob) : reject('Failed to create blob from canvas.'), 'image/webp', 1)
   })
 }
 
-export const handleRecordVideo = async srcObject => {
+export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) => {
   if (!srcObject || typeof srcObject !== 'object') {
     throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
   }
@@ -97,15 +97,22 @@ export const handleRecordVideo = async srcObject => {
       srcObject,
       { mimeType: 'video/webm' }
     )
-    mediaRecorderRef.current = mediaRecorder
+    
+    mediaRecorderRef = mediaRecorder
+    
     mediaRecorder.ondataavailable = event => {
-      chunksRef.current.push(event.data)
+      chunksRef.push(event.data)
     }
+    
     mediaRecorder.onstop = async () => {
       const blob = new Blob(chunksRef.current, { type: 'video/webm' })
-      chunksRef.current = []
+      chunksRef = []
       resolve(blob)
     }
+    mediaRecorder.onerror = event => {
+      reject(`Recording error: ${event.error}`)
+    }
+    
     mediaRecorder.start()
   })
 }
@@ -117,6 +124,6 @@ export const handleStopRecordVideo = mediaRecorderRef => {
   try {
     mediaRecorderRef.current.stop()
   } catch (error) {
-    console.error('Error accessing camera.')
+    console.error(`Error accessing camera. ${error}`)
   }
 }

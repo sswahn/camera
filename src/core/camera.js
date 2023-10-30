@@ -51,13 +51,15 @@ export const handleTurnOnLight = (srcObject, light) => {
   if (videoTrack.getCapabilities().hasOwnProperty('torch')) {
     constraints = { advanced: [{ torch: !light }] }
   }
-    
   if (!constraints) {
     throw new Error('This device has no torch.')
   }
-
-  // Turn on the camera light
-  return videoTrack.applyConstraints(constraints)
+  try {
+    // Turn on the camera light
+    return videoTrack.applyConstraints(constraints)
+  } catch (error) {
+    throw new Error(`Unable to turn on camera light. ${error}`)
+  }
 }
 
 export const toggleMute = (srcObject, mute) => {
@@ -93,9 +95,6 @@ export const handleTakePhoto = async videoRef => {
 export const handleRecordVideo = async (srcObject, chunksRef) => {
   if (!srcObject || typeof srcObject !== 'object') {
     throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
-  }
-  if (!mediaRecorderRef || typeof mediaRecorderRef !== 'object') {
-    throw new TypeError('handleRecordVideo: mediaRecorderRef is not initialized or not an object.')
   }
   if (!chunksRef || typeof chunksRef !== 'object') {
     throw new TypeError('handleRecordVideo: chunksRef is not initialized or not an object.')

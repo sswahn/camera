@@ -24,7 +24,7 @@ import camera from '@sswahn/camera'
 
 ### Starting the Camera  
 ```javascript
-const stream = await camera.start()
+const stream = await camera.start(constraints)
 // Now you can set this stream as the source for a video element.
 ```
 
@@ -33,31 +33,41 @@ const stream = await camera.start()
 camera.stop(stream)
 ```
 
-### Camera Light  
+### Turn On Light  
 ```javascript
-camera.turnOnLight(stream)  // Turns on the light
-camera.turnOffLight(stream) // Turns off the light
+camera.turnOnLight(stream)
 ```
 
-### Mute and Unmute Audio  
+### Turn Off Light  
 ```javascript
-camera.mute(stream)  // Mutes the audio
-camera.unmute(stream) // Unmutes the audio
+camera.turnOffLight(stream)
 ```
 
-### Capture Photos  
+### Mute Audio  
+```javascript
+camera.mute(stream)
+```
+
+### Unmute Audio  
+```javascript
+camera.unmute(stream)
+```
+
+### Take Photos  
 For any request, you can provide custom headers:  
 ```javascript
-const blob = await camera.takePhoto(videoRef.current)
-// You can now use this blob to display the image or save it.
+const blob = await camera.takePhoto(video)
 ```
 
-### Record Videos  
+### Start Recording  
 ```javascript
-const chunksRef = []
-const mediaRecorderRef = await camera.startRecording(stream, chunksRef.current)
-// ... recording ...
-camera.stopRecording(mediaRecorderRef.current)
+const chunks = []
+const mediaRecorder = await camera.startRecording(stream, chunks)
+```  
+
+### Stop Recording    
+```javascript
+const blob = await camera.stopRecording(mediaRecorder)
 ```  
 
 ## License

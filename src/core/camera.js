@@ -1,15 +1,25 @@
 // returns promise of a stream
-export const startCamera = () => {
-  try {
-    return navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: {
-        facingMode: 'environment',
-        aspectRatio: {
-          ideal: window.innerWidth / window.innerHeight
-        }
+// using async allows the error to be thrown as a rejected promise
+export const startCamera = async (constraints = {}) => {
+  const defaultConstraints = {
+    audio: true,
+    video: {
+      facingMode: 'environment',
+      aspectRatio: {
+        ideal: window.innerWidth / window.innerHeight
       }
-    })
+    }
+  }
+  const finalConstraints = {
+    ...defaultConstraints,
+    ...constraints,
+    video: {
+      ...defaultConstraints.video,
+      ...constraints.video
+    }
+  }
+  try {
+    return navigator.mediaDevices.getUserMedia(finalConstraints)
   } catch (error) {
     throw new Error(`Error accessing camera. ${error}`)
   }
@@ -107,7 +117,7 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
     mediaRecorderRef = mediaRecorder
     
     mediaRecorder.ondataavailable = event => {
-      chunksRef.push(event.data)
+      chunksRef = [...chuncksRef, event.data]
     }
     
     mediaRecorder.onstop = async () => {
@@ -130,6 +140,6 @@ export const handleStopRecordVideo = mediaRecorderRef => {
   try {
     mediaRecorderRef.current.stop()
   } catch (error) {
-    console.error(`Error accessing camera. ${error}`)
+    throw new Error(`Error accessing camera. ${error}`)
   }
 }

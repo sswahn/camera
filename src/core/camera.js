@@ -54,12 +54,9 @@ export const handleTurnOnLight = (srcObject, light) => {
   if (!constraints) {
     throw new Error('This device has no torch.')
   }
-  try {
-    // Turn on the camera light
-    return videoTrack.applyConstraints(constraints)
-  } catch (error) {
-    throw new Error(`Unable to turn on camera light. ${error}`)
-  }
+  
+  // Turn on the camera light
+  return videoTrack.applyConstraints(constraints)
 }
 
 export const toggleMute = (srcObject, mute) => {

@@ -1,7 +1,7 @@
 const camera = {
   // returns promise of a stream
   // using async allows the error to be thrown as a rejected promise
-  async start(constraints = {}) {
+  async on(constraints = {}) {
     const defaultConstraints = {
       audio: true,
       video: {
@@ -26,7 +26,7 @@ const camera = {
     }
   },
   
-  stop(stream) {
+  off(stream) {
     if (!stream || typeof stream !== 'object') {
       throw new TypeError('stop: Invalid argument. Expected MediaStream object.')
     }

@@ -24,12 +24,12 @@ import camera from '@sswahn/camera'
 
 ### Turn The Camera On  
 ```javascript
-const stream = await camera.on(constraints)
+const stream = await camera.turnOn(constraints)
 ```
 
 ### Turn The Camera Off  
 ```javascript
-camera.off(stream)
+camera.turnOff(stream)
 ```
 
 ### Turn On Light  

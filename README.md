@@ -60,7 +60,7 @@ const blob = await camera.photo(video)
 ### Start Recording  
 ```javascript
 const chunks = []
-const mediaRecorder = camera.record(stream, chunks)
+const mediaRecorder = camera.startRecording(stream, chunks)
 ```  
 
 ### Stop Recording    

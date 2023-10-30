@@ -63,18 +63,15 @@ export const toggleMute = (videoRef, mute) => {
 }
 
 export const handleTakePhoto = async videoRef => {
-  const video = videoRef.current
-  const canvas = document.createElement('canvas')
-  canvas.width = video.videoWidth
-  canvas.height = video.videoHeight
-  const ctx = canvas.getContext('2d')
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-  canvas.toBlob(async blob => {
-    const images = [ ...context.images, blob ]
-    dispatch({ type: 'images', payload: images })
-    database.put({ id: 'images', images })
-    createDefaults()
-  }, 'image/webp', 1)
+  return new Promise((resolve, reject) => {
+    const video = videoRef.current
+    const canvas = document.createElement('canvas')
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+    canvas.toBlob(blob => resolve(blob), 'image/webp', 1)
+  })
 }
 
 export const handleRecordVideo = async videoRef => {

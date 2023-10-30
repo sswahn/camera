@@ -37,26 +37,45 @@ const camera = {
     }
   },
   
-  turnOnLight(srcObject, light) {
-    if (!srcObject || typeof srcObject !== 'object' || typeof light !== 'boolean') {
-      throw new TypeError('handleTurnOnLight: Invalid arguments.')
+  turnOnLight(srcObject) {
+    if (!srcObject || typeof srcObject !== 'object') {
+        throw new TypeError('turnOnLight: Invalid arguments.')
     }
     const videoTrack = srcObject.getVideoTracks()[0]
     let constraints = undefined
-      
     // Check if the fillLightMode constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
-      constraints = { fillLightMode: !light ? 'flash' : 'off' }
+        constraints = { fillLightMode: 'flash' }
     }
     // Check if the torch constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('torch')) {
-      constraints = { advanced: [{ torch: !light }] }
+        constraints = { advanced: [{ torch: true }] }
     }
     if (!constraints) {
-      throw new Error('This device has no torch.')
+        throw new Error('This device has no torch.')
     }
-    
     // Turn on the camera light
+    return videoTrack.applyConstraints(constraints)
+  },
+
+  turnOffLight(srcObject) {
+    if (!srcObject || typeof srcObject !== 'object') {
+        throw new TypeError('turnOffLight: Invalid arguments.')
+    }
+    const videoTrack = srcObject.getVideoTracks()[0]
+    let constraints = undefined
+    // Check if the fillLightMode constraint is supported
+    if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
+        constraints = { fillLightMode: 'off' }
+    }
+    // Check if the torch constraint is supported
+    if (videoTrack.getCapabilities().hasOwnProperty('torch')) {
+        constraints = { advanced: [{ torch: false }] }
+    }
+    if (!constraints) {
+        throw new Error('This device has no torch.')
+    }
+    // Turn off the camera light
     return videoTrack.applyConstraints(constraints)
   },
   

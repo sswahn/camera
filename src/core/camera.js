@@ -37,7 +37,7 @@ const camera = {
     }
   },
   
-  turnOnLight(srcObject) {
+  turnLightOn(srcObject) {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOnLight: Invalid arguments.')
     }
@@ -62,7 +62,7 @@ const camera = {
     return videoTrack.applyConstraints(constraints)
   },
 
-  turnOffLight(srcObject) {
+  turnLightOff(srcObject) {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOffLight: Invalid arguments.')
     }
@@ -130,7 +130,7 @@ const camera = {
     })
   },
   
-  async startRecording(srcObject, chunks) {
+  startRecording(srcObject, chunks) {
     if (!srcObject || typeof srcObject !== 'object') {
       throw new TypeError('startRecording: Invalid argument. Expected srcObject.')
     }

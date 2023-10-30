@@ -33,10 +33,10 @@ const stream = await camera.start()
 camera.stop(stream)
 ```
 
-### Toggle Camera Light  
+### Camera Light  
 ```javascript
-camera.turnOnLight(stream, true)  // Turns on the light
-camera.turnOnLight(stream, false) // Turns off the light
+camera.turnOnLight(stream)  // Turns on the light
+camera.turnOffLight(stream) // Turns off the light
 ```
 
 ### Mute and Unmute Audio  
@@ -55,9 +55,9 @@ const blob = await camera.takePhoto(videoRef.current)
 ### Record Videos  
 ```javascript
 const chunksRef = []
-const mediaRecorderRef = await camera.startRecording(stream, chunksRef)
+const mediaRecorderRef = await camera.startRecording(stream, chunksRef.current)
 // ... recording ...
-camera.stopRecord(mediaRecorderRef)
+camera.stopRecording(mediaRecorderRef.current)
 ```  
 
 ## License

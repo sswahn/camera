@@ -92,6 +92,12 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
   if (!srcObject || typeof srcObject !== 'object') {
     throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
   }
+  if (!mediaRecorderRef || typeof mediaRecorderRef !== 'object') {
+    throw new TypeError('handleRecordVideo: mediaRecorderRef is not initialized or not an object.')
+  }
+  if (!chunksRef || typeof chunksRef !== 'object') {
+    throw new TypeError('handleRecordVideo: chunksRef is not initialized or not an object.')
+  }
   return new Promise((resolve, reject) => {
     const mediaRecorder = new MediaRecorder(
       srcObject,
@@ -118,7 +124,7 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
 }
 
 export const handleStopRecordVideo = mediaRecorderRef => {
-  if (!mediaRecorderRef || typeof mediaRecorderRef.current !== 'object') {
+  if (!mediaRecorderRef || typeof mediaRecorderRef !== 'object') {
     throw new TypeError('handleStopRecordVideo: mediaRecorderRef is not initialized or not an object.')
   }
   try {

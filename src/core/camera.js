@@ -117,12 +117,12 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
     mediaRecorderRef = mediaRecorder
     
     mediaRecorder.ondataavailable = event => {
-      chunksRef = [...chunksRef, event.data]
+      chunksRef.push(event.data)
     }
     
     mediaRecorder.onstop = async () => {
       const blob = new Blob(chunksRef, { type: 'video/webm' })
-      chunksRef = []
+      chunksRef.length = 0
       resolve(blob)
     }
     mediaRecorder.onerror = event => {

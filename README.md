@@ -17,57 +17,47 @@ npm install @sswahn/camera
 ## Usage  
 Here's a brief overview of the functionalities provided:  
 
+### Import Camera  
+```javascript
+import camera from '@sswahn/camera'
+```  
+
 ### Starting the Camera  
 ```javascript
-import { startCamera } from '@sswahn/camera'
-
-const stream = await startCamera()
+const stream = await camera.start()
 // Now you can set this stream as the source for a video element.
 ```
 
 ### Stopping the Camera  
 ```javascript
-import { stopCamera } from '@sswahn/camera'
-
-stopCamera(stream)
+camera.stop(stream)
 ```
 
 ### Toggle Camera Light  
 ```javascript
-import { handleTurnOnLight } from '@sswahn/camera'
-
-handleTurnOnLight(stream, true)  // Turns on the light
-handleTurnOnLight(stream, false) // Turns off the light
-
+camera.turnOnLight(stream, true)  // Turns on the light
+camera.turnOnLight(stream, false) // Turns off the light
 ```
 
 ### Mute and Unmute Audio  
 ```javascript
-import { toggleMute } from '@sswahn/camera'
-
-toggleMute(stream, true)  // Mutes the audio
-toggleMute(stream, false) // Unmutes the audio
-
+camera.mute(stream)  // Mutes the audio
+camera.unmute(stream) // Unmutes the audio
 ```
 
 ### Capture Photos  
 For any request, you can provide custom headers:  
 ```javascript
-import { handleTakePhoto } from '@sswahn/camera'
-
-const blob = await handleTakePhoto(videoRef)
+const blob = await camera.takePhoto(videoRef.current)
 // You can now use this blob to display the image or save it.
-
 ```
 
 ### Record Videos  
 ```javascript
-import { handleRecordVideo, handleStopRecordVideo } from '@sswahn/camera'
-
-const chunksRef = [];
-const mediaRecorderRef = await handleRecordVideo(stream, chunksRef)
+const chunksRef = []
+const mediaRecorderRef = await camera.startRecording(stream, chunksRef)
 // ... recording ...
-handleStopRecordVideo(mediaRecorderRef)
+camera.stopRecord(mediaRecorderRef)
 ```  
 
 ## License

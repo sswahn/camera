@@ -53,7 +53,6 @@ camera.unmute(stream)
 ```
 
 ### Take Photos  
-For any request, you can provide custom headers:  
 ```javascript
 const blob = await camera.takePhoto(video)
 ```

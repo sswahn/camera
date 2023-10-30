@@ -1,5 +1,5 @@
-// returns stream
-export const startCamera = async () => {
+// returns promise of a stream
+export const startCamera = () => {
   try {
     return navigator.mediaDevices.getUserMedia({
       audio: true,
@@ -16,16 +16,20 @@ export const startCamera = async () => {
 }
 
 export const stopCamera = stream => {
-  if (!stream) {
-    throw new Error('stopCamera: requires an argument.')
+  if (!stream || typeof stream !== 'object') {
+    throw new TypeError('stopCamera: Invalid argument. Expected MediaStream object.')
   }
-  // type check stream?
-  
-  stream.getTracks().forEach(track => track.stop())
+  try {
+    stream.getTracks().forEach(track => track.stop())
+  } catch (error) {
+    console.error('Error accessing camera.')
+  }
 }
 
 export const handleTurnOnLight = (srcObject, light) => {
-  // type check arguments?
+  if (!srcObject || typeof srcObject !== 'object' || typeof light !== 'boolean') {
+    throw new TypeError('handleTurnOnLight: Invalid arguments.')
+  }
   const videoTrack = srcObject.getVideoTracks()[0]
   let constraints = undefined
     
@@ -55,6 +59,9 @@ export const handleTurnOnLight = (srcObject, light) => {
 }
 
 export const toggleMute = (srcObject, mute) => {
+  if (!srcObject || typeof srcObject !== 'object' || typeof mute !== 'boolean') {
+    throw new TypeError('toggleMute: Invalid arguments.')
+  }
   const mediaStream = srcObject
   const audioTracks = mediaStream.getAudioTracks()
   if (audioTracks.length === 0) {
@@ -67,6 +74,9 @@ export const toggleMute = (srcObject, mute) => {
 }
 
 export const handleTakePhoto = async videoRef => {
+  if (!videoRef || typeof videoRef.current !== 'object') {
+    throw new TypeError('handleTakePhoto: Invalid argument. Expected videoRef object.')
+  }
   return new Promise((resolve, reject) => {
     const video = videoRef.current
     const canvas = document.createElement('canvas')
@@ -79,6 +89,9 @@ export const handleTakePhoto = async videoRef => {
 }
 
 export const handleRecordVideo = async srcObject => {
+  if (!srcObject || typeof srcObject !== 'object') {
+    throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
+  }
   return new Promise((resolve, reject) => {
     const mediaRecorder = new MediaRecorder(
       srcObject,
@@ -97,7 +110,13 @@ export const handleRecordVideo = async srcObject => {
   })
 }
 
-export const handleStopRecordVideo = () => {
-  timerRef.current = timer
-  mediaRecorderRef.current.stop()
+export const handleStopRecordVideo = mediaRecorderRef => {
+  if (!mediaRecorderRef || typeof mediaRecorderRef.current !== 'object') {
+    throw new TypeError('handleStopRecordVideo: mediaRecorderRef is not initialized or not an object.')
+  }
+  try {
+    mediaRecorderRef.current.stop()
+  } catch (error) {
+    console.error('Error accessing camera.')
+  }
 }

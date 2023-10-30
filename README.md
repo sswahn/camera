@@ -19,14 +19,17 @@ Here's a brief overview of the functionalities provided:
 
 ### Starting the Camera  
 ```javascript
-import { stopCamera } from '@sswahn/camera'
+import { startCamera } from '@sswahn/camera'
 
-stopCamera(stream)
+const stream = await startCamera()
+// Now you can set this stream as the source for a video element.
 ```
 
 ### Stopping the Camera  
 ```javascript
-const response = await server.post(api, request)
+import { stopCamera } from '@sswahn/camera'
+
+stopCamera(stream)
 ```
 
 ### Toggle Camera Light  

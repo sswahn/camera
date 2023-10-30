@@ -25,7 +25,6 @@ import camera from '@sswahn/camera'
 ### Starting the Camera  
 ```javascript
 const stream = await camera.start(constraints)
-// Now you can set this stream as the source for a video element.
 ```
 
 ### Stopping the Camera  

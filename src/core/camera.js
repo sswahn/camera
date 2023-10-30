@@ -28,7 +28,7 @@ const camera = {
   
   stop(stream) {
     if (!stream || typeof stream !== 'object') {
-      throw new TypeError('stopCamera: Invalid argument. Expected MediaStream object.')
+      throw new TypeError('stop: Invalid argument. Expected MediaStream object.')
     }
     try {
       stream.getTracks().forEach(track => track.stop())
@@ -41,8 +41,11 @@ const camera = {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOnLight: Invalid arguments.')
     }
-    const videoTrack = srcObject.getVideoTracks()[0]
     let constraints = undefined
+    const videoTrack = srcObject.getVideoTracks()[0]
+    if (!videoTracks.length) {
+      throw new Error('No video tracks available.')
+    }
     // Check if the fillLightMode constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
         constraints = { fillLightMode: 'flash' }
@@ -62,8 +65,11 @@ const camera = {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOffLight: Invalid arguments.')
     }
-    const videoTrack = srcObject.getVideoTracks()[0]
     let constraints = undefined
+    const videoTrack = srcObject.getVideoTracks()[0]
+    if (!videoTracks.length) {
+      throw new Error('No video tracks available.')
+    }
     // Check if the fillLightMode constraint is supported
     if (videoTrack.getCapabilities().hasOwnProperty('fillLightMode')) {
         constraints = { fillLightMode: 'off' }
@@ -81,7 +87,7 @@ const camera = {
   
   async takePhoto(videoRef) {
     if (!videoRef || typeof videoRef.current !== 'object') {
-      throw new TypeError('handleTakePhoto: Invalid argument. Expected videoRef object.')
+      throw new TypeError('takePhoto: Invalid argument. Expected videoRef object.')
     }
     return new Promise((resolve, reject) => {
       const video = videoRef.current
@@ -122,42 +128,43 @@ const camera = {
     })
   },
   
-  async startRecording(srcObject, chunksRef) {
+  async startRecording(srcObject, chunks) {
     if (!srcObject || typeof srcObject !== 'object') {
-      throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
+      throw new TypeError('startRecording: Invalid argument. Expected srcObject.')
     }
-    if (!chunksRef || typeof chunksRef !== 'object') {
-      throw new TypeError('handleRecordVideo: chunksRef is not initialized or not an object.')
+    if (!chunks || typeof chunks !== 'object') {
+      throw new TypeError('startRecording: chunks is not initialized or not an object.')
     }
-    return new Promise((resolve, reject) => {
-      const mediaRecorder = new MediaRecorder(
-        srcObject,
-        { mimeType: 'video/webm' }
-      )
-      mediaRecorder.ondataavailable = event => {
-        chunksRef.push(event.data)
-      }
-      mediaRecorder.onstop = async () => {
-        const blob = new Blob(chunksRef, { type: 'video/webm' })
-        chunksRef.length = 0
-        resolve(blob)
-      }
-      mediaRecorder.onerror = event => {
-        reject(`Recording error: ${event.error}`)
-      }
-      mediaRecorder.start()
-    })
+    const mediaRecorder = new MediaRecorder(srcObject, { mimeType: 'video/webm' })
+    mediaRecorder.ondataavailable = event => {
+      chunks.push(event.data)
+    }
+    mediaRecorder.start()
+    return mediaRecorder
   },
 
-  stopRecording(mediaRecorderRef) {
-    if (!mediaRecorderRef || typeof mediaRecorderRef !== 'object') {
-      throw new TypeError('handleStopRecordVideo: mediaRecorderRef is not initialized or not an object.')
+  stopRecording(mediaRecorder, chunks) {
+    if (!mediaRecorder || typeof mediaRecorder !== 'object') {
+      throw new TypeError('stopRecording: mediaRecorderRef is not initialized or not an object.')
     }
-    try {
-      mediaRecorderRef.stop()
-    } catch (error) {
-      throw new Error(`Error accessing camera. ${error}`)
+    if (!chunks || typeof chunks !== 'object') {
+      throw new TypeError('stopRecording: chunks is not initialized or not an object.')
     }
+    return new Promise((resolve, reject) => {
+      try {
+        mediaRecorder.onstop = async () => {
+          const blob = new Blob(chunks, { type: 'video/webm' })
+          chunks.length = 0
+          resolve(blob)
+        }
+        mediaRecorder.onerror = event => {
+          reject(`Recording error: ${event.error}`)
+        }
+        mediaRecorder.stop()
+      } catch (error) {
+        throw new Error(`Error accessing camera. ${error}`)
+      }
+    })
   }
 }
 

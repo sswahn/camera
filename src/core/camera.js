@@ -57,11 +57,7 @@ export const handleTurnOnLight = (srcObject, light) => {
   }
 
   // Turn on the camera light
-  videoTrack.applyConstraints(constraints).catch(error => {
-    throw new Error('Unable to turn on camera light: ', error)
-  })
-    
-  return !light
+  return videoTrack.applyConstraints(constraints)
 }
 
 export const toggleMute = (srcObject, mute) => {
@@ -94,7 +90,7 @@ export const handleTakePhoto = async videoRef => {
   })
 }
 
-export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) => {
+export const handleRecordVideo = async (srcObject, chunksRef) => {
   if (!srcObject || typeof srcObject !== 'object') {
     throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
   }
@@ -109,13 +105,9 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
       srcObject,
       { mimeType: 'video/webm' }
     )
-    
-    mediaRecorderRef = mediaRecorder
-    
     mediaRecorder.ondataavailable = event => {
       chunksRef.push(event.data)
     }
-    
     mediaRecorder.onstop = async () => {
       const blob = new Blob(chunksRef, { type: 'video/webm' })
       chunksRef.length = 0
@@ -124,7 +116,6 @@ export const handleRecordVideo = async (srcObject, mediaRecorderRef, chunksRef) 
     mediaRecorder.onerror = event => {
       reject(`Recording error: ${event.error}`)
     }
-    
     mediaRecorder.start()
   })
 }
@@ -134,7 +125,7 @@ export const handleStopRecordVideo = mediaRecorderRef => {
     throw new TypeError('handleStopRecordVideo: mediaRecorderRef is not initialized or not an object.')
   }
   try {
-    mediaRecorderRef.current.stop()
+    mediaRecorderRef.stop()
   } catch (error) {
     throw new Error(`Error accessing camera. ${error}`)
   }

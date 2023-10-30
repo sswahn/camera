@@ -22,24 +22,24 @@ Here's a brief overview of the functionalities provided:
 import camera from '@sswahn/camera'
 ```  
 
-### Starting the Camera  
+### Turn The Camera On  
 ```javascript
-const stream = await camera.start(constraints)
+const stream = await camera.on(constraints)
 ```
 
-### Stopping the Camera  
+### Turn The Camera Off  
 ```javascript
-camera.stop(stream)
+camera.off(stream)
 ```
 
 ### Turn On Light  
 ```javascript
-camera.turnOnLight(stream)
+camera.lightOn(stream)
 ```
 
 ### Turn Off Light  
 ```javascript
-camera.turnOffLight(stream)
+camera.lightOff(stream)
 ```
 
 ### Mute Audio  

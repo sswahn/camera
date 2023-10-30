@@ -24,22 +24,22 @@ import camera from '@sswahn/camera'
 
 ### Turn The Camera On  
 ```javascript
-const stream = await camera.turnOn(constraints)
+const stream = await camera.on(constraints)
 ```
 
 ### Turn The Camera Off  
 ```javascript
-camera.turnOff(stream)
+camera.off(stream)
 ```
 
 ### Turn On Light  
 ```javascript
-camera.lightOn(stream)
+camera.light(stream)
 ```
 
 ### Turn Off Light  
 ```javascript
-camera.lightOff(stream)
+camera.dark(stream)
 ```
 
 ### Mute Audio  
@@ -54,13 +54,13 @@ camera.unmute(stream)
 
 ### Take Photos  
 ```javascript
-const blob = await camera.takePhoto(video)
+const blob = await camera.photo(video)
 ```
 
 ### Start Recording  
 ```javascript
 const chunks = []
-const mediaRecorder = camera.startRecording(stream, chunks)
+const mediaRecorder = camera.record(stream, chunks)
 ```  
 
 ### Stop Recording    

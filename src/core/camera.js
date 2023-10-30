@@ -60,22 +60,6 @@ const camera = {
     return videoTrack.applyConstraints(constraints)
   },
   
-  // break into two functions? mute, unmute
-  toggleMute(srcObject, mute) {
-    if (!srcObject || typeof srcObject !== 'object' || typeof mute !== 'boolean') {
-      throw new TypeError('toggleMute: Invalid arguments.')
-    }
-    const mediaStream = srcObject
-    const audioTracks = mediaStream.getAudioTracks()
-    if (audioTracks.length === 0) {
-      throw new Error('No audio tracks found.')
-    }
-    audioTracks.forEach(track => {
-      track.enabled = mute // set enabled as false to mute
-    })
-    return !mute
-  },
-  
   async takePhoto(videoRef) {
     if (!videoRef || typeof videoRef.current !== 'object') {
       throw new TypeError('handleTakePhoto: Invalid argument. Expected videoRef object.')
@@ -91,7 +75,35 @@ const camera = {
     })
   },
   
-  async startVideo(srcObject, chunksRef) {
+  mute(srcObject) {
+    if (!srcObject || typeof srcObject !== 'object') {
+        throw new TypeError('mute: Invalid arguments.')
+    }
+    const mediaStream = srcObject
+    const audioTracks = mediaStream.getAudioTracks()
+    if (audioTracks.length === 0) {
+        throw new Error('No audio tracks found.')
+    }
+    audioTracks.forEach(track => {
+        track.enabled = false;
+    })
+  },
+
+  unmute(srcObject) {
+    if (!srcObject || typeof srcObject !== 'object') {
+        throw new TypeError('unmute: Invalid arguments.')
+    }
+    const mediaStream = srcObject
+    const audioTracks = mediaStream.getAudioTracks()
+    if (audioTracks.length === 0) {
+        throw new Error('No audio tracks found.')
+    }
+    audioTracks.forEach(track => {
+        track.enabled = true;
+    })
+  },
+  
+  async startRecording(srcObject, chunksRef) {
     if (!srcObject || typeof srcObject !== 'object') {
       throw new TypeError('handleRecordVideo: Invalid argument. Expected srcObject.')
     }
@@ -118,7 +130,7 @@ const camera = {
     })
   },
 
-  stopVideo(mediaRecorderRef) {
+  stopRecording(mediaRecorderRef) {
     if (!mediaRecorderRef || typeof mediaRecorderRef !== 'object') {
       throw new TypeError('handleStopRecordVideo: mediaRecorderRef is not initialized or not an object.')
     }

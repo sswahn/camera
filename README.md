@@ -24,7 +24,7 @@ import camera from '@sswahn/camera'
 
 ### Turn The Camera On  
 ```javascript
-const stream = await camera.on(constraints)
+const stream = await camera.on(optionalConstraints)
 ```
 
 ### Turn The Camera Off  

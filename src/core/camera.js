@@ -119,32 +119,32 @@ const camera = {
         track.enabled = true;
     })
   },
-  startRecording(stream, chunks) {
+  startRecording(stream, frames) {
     if (!stream || typeof stream !== 'object') {
       throw new TypeError('startRecording: Invalid argument. Expected stream.')
     }
-    if (!chunks || typeof chunks !== 'object') {
-      throw new TypeError('startRecording: chunks is not initialized or not an object.')
+    if (!frames || typeof frames !== 'object') {
+      throw new TypeError('startRecording: frames is not initialized or not an object.')
     }
     const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
     mediaRecorder.ondataavailable = event => {
-      chunks.push(event.data)
+      frames.push(event.data)
     }
     mediaRecorder.start()
     return mediaRecorder
   },
-  stopRecording(mediaRecorder, chunks) {
+  stopRecording(mediaRecorder, frames) {
     if (!mediaRecorder || typeof mediaRecorder !== 'object') {
       throw new TypeError('stopRecording: mediaRecorderRef is not initialized or not an object.')
     }
-    if (!chunks || typeof chunks !== 'object') {
-      throw new TypeError('stopRecording: chunks is not initialized or not an object.')
+    if (!frames || typeof frames !== 'object') {
+      throw new TypeError('stopRecording: frames is not initialized or not an object.')
     }
     return new Promise((resolve, reject) => {
       try {
         mediaRecorder.onstop = async () => {
-          const blob = new Blob(chunks, { type: 'video/webm' })
-          chunks.length = 0
+          const blob = new Blob(frames, { type: 'video/webm' })
+          frames.length = 0
           resolve(blob)
         }
         mediaRecorder.onerror = event => {

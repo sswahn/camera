@@ -54,7 +54,7 @@ camera.unmute(stream)
 
 ### Take Photos  
 ```javascript
-const blob = await camera.photo(video)
+const blob = await camera.takePhoto(videoElement)
 ```
 
 ### Start Recording  

@@ -1,6 +1,4 @@
 const camera = {
-  // returns promise of a stream
-  // using async allows the error to be thrown as a rejected promise
   async on(constraints = {}) {
     const defaultConstraints = {
       audio: true,
@@ -25,7 +23,6 @@ const camera = {
       throw new Error(`Error accessing camera. ${error}`)
     }
   },
-  
   off(stream) {
     if (!stream || typeof stream !== 'object') {
       throw new TypeError('stop: Invalid argument. Expected MediaStream object.')
@@ -36,8 +33,7 @@ const camera = {
       throw new Error(`Error accessing camera. ${error}`)
     }
   },
-  
-  turnLightOn(srcObject) {
+  light(srcObject) {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOnLight: Invalid arguments.')
     }
@@ -61,8 +57,7 @@ const camera = {
     // Turn on the camera light
     return videoTrack.applyConstraints(constraints)
   },
-
-  turnLightOff(srcObject) {
+  dark(srcObject) {
     if (!srcObject || typeof srcObject !== 'object') {
         throw new TypeError('turnOffLight: Invalid arguments.')
     }
@@ -86,7 +81,6 @@ const camera = {
     // Turn off the camera light
     return videoTrack.applyConstraints(constraints)
   },
-  
   async takePhoto(videoRef) {
     if (!videoRef || typeof videoRef.current !== 'object') {
       throw new TypeError('takePhoto: Invalid argument. Expected videoRef object.')
@@ -129,7 +123,6 @@ const camera = {
         track.enabled = true;
     })
   },
-  
   startRecording(srcObject, chunks) {
     if (!srcObject || typeof srcObject !== 'object') {
       throw new TypeError('startRecording: Invalid argument. Expected srcObject.')
@@ -144,7 +137,6 @@ const camera = {
     mediaRecorder.start()
     return mediaRecorder
   },
-
   stopRecording(mediaRecorder, chunks) {
     if (!mediaRecorder || typeof mediaRecorder !== 'object') {
       throw new TypeError('stopRecording: mediaRecorderRef is not initialized or not an object.')

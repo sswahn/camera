@@ -59,13 +59,13 @@ const blob = await camera.takePhoto(videoElement)
 
 ### Start Recording  
 ```javascript
-const chunks = []
-const mediaRecorder = camera.startRecording(stream, chunks)
+const frames = []
+const mediaRecorder = camera.startRecording(stream, frames)
 ```  
 
 ### Stop Recording    
 ```javascript
-const blob = await camera.stopRecording(mediaRecorder, chunks)
+const blob = await camera.stopRecording(mediaRecorder, frames)
 ```  
 
 ## License

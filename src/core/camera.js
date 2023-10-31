@@ -33,12 +33,12 @@ const camera = {
       throw new Error(`Error accessing camera. ${error}`)
     }
   },
-  light(srcObject) {
-    if (!srcObject || typeof srcObject !== 'object') {
+  light(stream) {
+    if (!stream || typeof stream !== 'object') {
         throw new TypeError('turnOnLight: Invalid arguments.')
     }
     let constraints = undefined
-    const videoTracks = srcObject.getVideoTracks()
+    const videoTracks = stream.getVideoTracks()
     if (!videoTracks.length) {
       throw new Error('No video tracks available.')
     }
@@ -57,12 +57,12 @@ const camera = {
     // Turn on the camera light
     return videoTrack.applyConstraints(constraints)
   },
-  dark(srcObject) {
-    if (!srcObject || typeof srcObject !== 'object') {
+  dark(stream) {
+    if (!stream || typeof stream !== 'object') {
         throw new TypeError('turnOffLight: Invalid arguments.')
     }
     let constraints = undefined
-    const videoTracks = srcObject.getVideoTracks()
+    const videoTracks = stream.getVideoTracks()
     if (!videoTracks.length) {
       throw new Error('No video tracks available.')
     }
@@ -81,12 +81,12 @@ const camera = {
     // Turn off the camera light
     return videoTrack.applyConstraints(constraints)
   },
-  async takePhoto(videoRef) {
-    if (!videoRef || typeof videoRef.current !== 'object') {
+  async takePhoto(videoElement) {
+    if (!videoRef || typeof videoRef !== 'object') {
       throw new TypeError('takePhoto: Invalid argument. Expected videoRef object.')
     }
     return new Promise((resolve, reject) => {
-      const video = videoRef.current
+      const video = videoElement
       const canvas = document.createElement('canvas')
       canvas.width = video.videoWidth
       canvas.height = video.videoHeight
@@ -95,13 +95,11 @@ const camera = {
       canvas.toBlob(blob => blob ? resolve(blob) : reject('Failed to create blob from canvas.'), 'image/webp', 1)
     })
   },
-  
-  mute(srcObject) {
-    if (!srcObject || typeof srcObject !== 'object') {
+  mute(stream) {
+    if (!stream || typeof stream !== 'object') {
         throw new TypeError('mute: Invalid arguments.')
     }
-    const mediaStream = srcObject
-    const audioTracks = mediaStream.getAudioTracks()
+    const audioTracks = stream.getAudioTracks()
     if (audioTracks.length === 0) {
         throw new Error('No audio tracks found.')
     }
@@ -109,13 +107,11 @@ const camera = {
         track.enabled = false;
     })
   },
-
-  unmute(srcObject) {
-    if (!srcObject || typeof srcObject !== 'object') {
+  unmute(stream) {
+    if (!stream || typeof stream !== 'object') {
         throw new TypeError('unmute: Invalid arguments.')
     }
-    const mediaStream = srcObject
-    const audioTracks = mediaStream.getAudioTracks()
+    const audioTracks = stream.getAudioTracks()
     if (audioTracks.length === 0) {
         throw new Error('No audio tracks found.')
     }
@@ -123,14 +119,14 @@ const camera = {
         track.enabled = true;
     })
   },
-  startRecording(srcObject, chunks) {
-    if (!srcObject || typeof srcObject !== 'object') {
-      throw new TypeError('startRecording: Invalid argument. Expected srcObject.')
+  startRecording(stream, chunks) {
+    if (!stream || typeof stream !== 'object') {
+      throw new TypeError('startRecording: Invalid argument. Expected stream.')
     }
     if (!chunks || typeof chunks !== 'object') {
       throw new TypeError('startRecording: chunks is not initialized or not an object.')
     }
-    const mediaRecorder = new MediaRecorder(srcObject, { mimeType: 'video/webm' })
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
     mediaRecorder.ondataavailable = event => {
       chunks.push(event.data)
     }

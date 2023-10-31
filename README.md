@@ -65,7 +65,7 @@ const mediaRecorder = camera.startRecording(stream, chunks)
 
 ### Stop Recording    
 ```javascript
-const blob = await camera.stopRecording(mediaRecorder)
+const blob = await camera.stopRecording(mediaRecorder, chunks)
 ```  
 
 ## License

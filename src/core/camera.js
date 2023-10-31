@@ -82,8 +82,8 @@ const camera = {
     return videoTrack.applyConstraints(constraints)
   },
   async takePhoto(videoElement) {
-    if (!videoRef || typeof videoRef !== 'object') {
-      throw new TypeError('takePhoto: Invalid argument. Expected videoRef object.')
+    if (!videoElement || typeof videoElement !== 'object') {
+      throw new TypeError('takePhoto: Invalid argument. Expected video element reference.')
     }
     return new Promise((resolve, reject) => {
       const video = videoElement

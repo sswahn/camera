@@ -25,6 +25,11 @@ import camera from '@sswahn/camera'
 ### Turn The Camera On  
 ```javascript
 const stream = await camera.on(optionalConstraints)
+videoRef.current.srcObject = stream
+
+...
+
+<video ref={videoRef} autoPlay></video>
 ```
 
 ### Turn The Camera Off  

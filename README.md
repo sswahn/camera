@@ -26,9 +26,7 @@ import camera from '@sswahn/camera'
 ```javascript
 const stream = await camera.on(optionalConstraints)
 videoRef.current.srcObject = stream
-
 ...
-
 <video ref={videoRef} autoPlay></video>
 ```
 

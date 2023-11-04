@@ -30,6 +30,13 @@ videoRef.current.srcObject = stream
 <video ref={videoRef} autoPlay></video>
 ```
 
+### Display The Stream   
+```javascript
+videoRef.current.srcObject = stream
+...
+<video ref={videoRef} autoPlay></video>
+```
+
 ### Turn The Camera Off  
 ```javascript
 camera.off(stream)

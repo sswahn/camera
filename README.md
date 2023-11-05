@@ -61,6 +61,7 @@ camera.unmute(stream)
 
 ### Take Photos  
 ```javascript
+const videoElement = videoRef.current
 const blob = await camera.takePhoto(videoElement)
 ```
 

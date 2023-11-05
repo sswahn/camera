@@ -11,6 +11,7 @@
     "photo",
     "mediaDevices",
     "mediaStream",
+    "mediaRecorder",
     "getUserMedia"
   ],
   "repository": {

@@ -31,7 +31,7 @@ const stream = await camera.on(optionalConstraints)
 ```javascript
 videoRef.current.srcObject = stream
 ...
-<video ref={videoRef} autoPlay></video>
+<video ref={videoRef} autoPlay muted></video>
 ```
 
 ### Take Photos  

@@ -11,11 +11,7 @@ const camera = {
     }
     const finalConstraints = {
       ...defaultConstraints,
-      ...constraints,
-      video: {
-        ...defaultConstraints.video,
-        ...constraints.video
-      }
+      ...constraints
     }
     try {
       return navigator.mediaDevices.getUserMedia(finalConstraints)

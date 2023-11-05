@@ -1,9 +1,8 @@
 {
   "name": "@sswahn/camera",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "license": "MIT",
   "description": "Camera provides a set of methods for managing video and audio streams from a device's camera and microphone. This library offers functionalities like starting/stopping the camera, toggling the light, muting audio, capturing photos, and recording videos.",
-  "type": "module",
   "main": "src/index.js",
   "keywords": [
     "camera",

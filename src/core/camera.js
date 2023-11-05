@@ -1,7 +1,10 @@
 const camera = {
   async on(constraints = {}) {
     const defaultConstraints = {
-      audio: true,
+      audio: {
+        echoCancellation: true,
+        sampleRate: 48000
+      },
       video: {
         facingMode: 'environment',
         aspectRatio: {
@@ -122,7 +125,7 @@ const camera = {
     if (!frames || typeof frames !== 'object') {
       throw new TypeError('startRecording: frames is not initialized or not an object.')
     }
-    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9,opus' })
     mediaRecorder.ondataavailable = event => {
       frames.push(event.data)
     }

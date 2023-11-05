@@ -34,6 +34,23 @@ videoRef.current.srcObject = stream
 <video ref={videoRef} autoPlay></video>
 ```
 
+### Take Photos  
+```javascript
+const videoElement = videoRef.current
+const blob = await camera.takePhoto(videoElement)
+```
+
+### Start Recording  
+```javascript
+const frames = []
+const recorder = camera.startRecording(stream, frames)
+```  
+
+### Stop Recording    
+```javascript
+const blob = await camera.stopRecording(recorder, frames)
+```  
+
 ### Turn The Camera Off  
 ```javascript
 camera.off(stream)
@@ -58,23 +75,6 @@ camera.mute(stream)
 ```javascript
 camera.unmute(stream)
 ```
-
-### Take Photos  
-```javascript
-const videoElement = videoRef.current
-const blob = await camera.takePhoto(videoElement)
-```
-
-### Start Recording  
-```javascript
-const frames = []
-const recorder = camera.startRecording(stream, frames)
-```  
-
-### Stop Recording    
-```javascript
-const blob = await camera.stopRecording(recorder, frames)
-```  
 
 ## License
 Camera is [MIT Licensed](https://github.com/sswahn/camera/blob/main/LICENSE)

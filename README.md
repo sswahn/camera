@@ -77,4 +77,4 @@ const blob = await camera.stopRecording(recorder, frames)
 ```  
 
 ## License
-Server is [MIT Licensed](https://github.com/sswahn/camera/blob/main/LICENSE)
+Camera is [MIT Licensed](https://github.com/sswahn/camera/blob/main/LICENSE)

@@ -3,10 +3,10 @@ Camera provides a set of methods for managing video and audio streams from a dev
 
 ## Features
 - Start and stop the device's camera with custom constraints.
-- Toggle camera light (if supported by the device).
-- Mute and unmute audio.
 - Capture still photos from the video stream.
 - Record video clips.
+- Toggle camera light (if supported by the device).
+- Mute and unmute audio.
 
 ## Installation
 Using npm:

@@ -1,4 +1,4 @@
-# Camera 
+# Camera · [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/sswahn/camera/blob/main/LICENSE)
 Camera provides a set of methods for managing video and audio streams from a device's camera and microphone. This library offers functionalities like starting/stopping the camera, toggling the light, muting audio, capturing photos, and recording videos.  
 
 ## Features

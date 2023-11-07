@@ -1,4 +1,4 @@
-# Camera · [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/sswahn/camera/blob/main/LICENSE) ![Weekly Downloads](https://img.shields.io/npm/dw/@sswahn/camera)
+# Camera · [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/sswahn/camera/blob/main/LICENSE) ![npm version](https://img.shields.io/npm/v/@sswahn/camera) ![Weekly Downloads](https://img.shields.io/npm/dw/@sswahn/camera) ![Weekly Downloads](https://img.shields.io/npm/dw/@sswahn/camera)
 Camera provides a set of methods for managing video and audio streams from a device's camera and microphone. This library offers functionalities like starting/stopping the camera, toggling the light, muting audio, capturing photos, and recording videos.  
 
 ## Features

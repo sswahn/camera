@@ -9,7 +9,7 @@ Camera provides a set of methods for managing video and audio streams from a dev
 - Mute and unmute audio.
 
 ## Installation
-Using npm:
+Using npm.
 ```bash
 npm install @sswahn/camera
 ```

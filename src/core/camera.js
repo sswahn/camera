@@ -1,7 +1,7 @@
 const camera = {
   async on(constraints = {}) {
     if (typeof constraints !== 'object' || Array.isArray(constraints)) {
-      throw new TypeError('Argument must be of an object.')
+      throw new TypeError('on: argument must be an object literal.')
     }
     const defaultConstraints = {
       audio: {

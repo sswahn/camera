@@ -1,5 +1,8 @@
 const camera = {
   async on(constraints = {}) {
+    if (typeof constraints !== 'object') {
+      throw new TypeError('Argument must be of type object.')
+    }
     const defaultConstraints = {
       audio: {
         echoCancellation: true,

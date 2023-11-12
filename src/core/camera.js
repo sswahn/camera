@@ -26,7 +26,7 @@ const camera = {
     }
   },
   off(stream) {
-    if (!stream || typeof stream !== 'object') {
+    if (!(stream instanceof MediaStream)) {
       throw new TypeError('stop: Invalid argument. Expected MediaStream object.')
     }
     try {
@@ -36,8 +36,8 @@ const camera = {
     }
   },
   light(stream) {
-    if (!stream || typeof stream !== 'object') {
-        throw new TypeError('turnOnLight: Invalid arguments.')
+    if (!(stream instanceof MediaStream)) {
+      throw new TypeError('light: argument must be an instance of MediaStream.')
     }
     let constraints = undefined
     const videoTracks = stream.getVideoTracks()
@@ -60,8 +60,8 @@ const camera = {
     return videoTrack.applyConstraints(constraints)
   },
   dark(stream) {
-    if (!stream || typeof stream !== 'object') {
-        throw new TypeError('turnOffLight: Invalid arguments.')
+    if (!(stream instanceof MediaStream)) {
+      throw new TypeError('dark: argument must be an instance of MediaStream.')
     }
     let constraints = undefined
     const videoTracks = stream.getVideoTracks()
@@ -84,8 +84,8 @@ const camera = {
     return videoTrack.applyConstraints(constraints)
   },
   async takePhoto(videoElement) {
-    if (!videoElement || typeof videoElement !== 'object') {
-      throw new TypeError('takePhoto: Invalid argument. Expected video element reference.')
+    if (!(videoElement instanceof HTMLVideoElement)) {
+      throw new TypeError('takePhoto: argument must be an instance of HTMLVideoElement.')
     }
     return new Promise((resolve, reject) => {
       const video = videoElement
@@ -98,8 +98,8 @@ const camera = {
     })
   },
   mute(stream) {
-    if (!stream || typeof stream !== 'object') {
-        throw new TypeError('mute: Invalid arguments.')
+    if (!(stream instanceof MediaStream)) {
+      throw new TypeError('mute: argument must be an instance of MediaStream.')
     }
     const audioTracks = stream.getAudioTracks()
     if (audioTracks.length === 0) {
@@ -110,8 +110,8 @@ const camera = {
     })
   },
   unmute(stream) {
-    if (!stream || typeof stream !== 'object') {
-        throw new TypeError('unmute: Invalid arguments.')
+    if (!(stream instanceof MediaStream)) {
+      throw new TypeError('unmute: argument must be an instance of MediaStream.')
     }
     const audioTracks = stream.getAudioTracks()
     if (audioTracks.length === 0) {
@@ -122,11 +122,11 @@ const camera = {
     })
   },
   startRecording(stream, frames) {
-    if (!stream || typeof stream !== 'object') {
-      throw new TypeError('startRecording: Invalid argument. Expected stream.')
+    if (!(stream instanceof MediaStream)) {
+      throw new TypeError('startRecording: first argument must be an instance of MediaStream.')
     }
-    if (!frames || typeof frames !== 'object') {
-      throw new TypeError('startRecording: frames is not initialized or not an object.')
+    if (!Array.isArray(frames)) {
+      throw new TypeError('startRecording: second argument must be an array.')
     }
     const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9,opus' })
     mediaRecorder.ondataavailable = event => {
@@ -136,11 +136,11 @@ const camera = {
     return mediaRecorder
   },
   stopRecording(mediaRecorder, frames) {
-    if (!mediaRecorder || typeof mediaRecorder !== 'object') {
-      throw new TypeError('stopRecording: mediaRecorderRef is not initialized or not an object.')
+    if (!(mediaRecorder instanceof MediaRecorder)) {
+      throw new TypeError('stopRecording: first argument must be an instance of MediaRecorder.')
     }
-    if (!frames || typeof frames !== 'object') {
-      throw new TypeError('stopRecording: frames is not initialized or not an object.')
+    if (!Array.isArray(frames)) {
+      throw new TypeError('stopRecording: second argument must be an array.')
     }
     return new Promise((resolve, reject) => {
       try {

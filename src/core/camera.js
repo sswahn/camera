@@ -27,7 +27,7 @@ const camera = {
   },
   off(stream) {
     if (!(stream instanceof MediaStream)) {
-      throw new TypeError('stop: argument must be an instance of MediaStream.')
+      throw new TypeError('off: argument must be an instance of MediaStream.')
     }
     try {
       stream.getTracks().forEach(track => track.stop())

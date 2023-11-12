@@ -1,5 +1,3 @@
-import { deepMerge } from '../utilities/deepMerge.js'
-
 const camera = {
   async on(constraints = {}) {
     if (typeof constraints !== 'object' || Array.isArray(constraints)) {
@@ -17,9 +15,10 @@ const camera = {
         }
       }
     }
-    const finalConstraints = Object.keys(constraints).length 
-      ? deepMerge(defaultConstraints, constraints) 
-      : defaultConstraints
+    const finalConstraints = {
+      ...defaultConstraints,
+      ...constraints
+    }
     try {
       return navigator.mediaDevices.getUserMedia(finalConstraints)
     } catch (error) {
